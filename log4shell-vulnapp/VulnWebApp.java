@@ -27,3 +27,4 @@ public class VulnWebApp {
             clientSocket.close();
         }
     }
+}
