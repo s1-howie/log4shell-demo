@@ -5,17 +5,24 @@ import java.io.PrintWriter;
 import org.apache.logging.log4j.*;
 
 public class VulnWebApp extends HttpServlet {
-    static Logger logger = LogManager.getLogger("VulnWebApp");
+    private static final Logger logger = LogManager.getLogger(VulnWebApp.class);
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        if (name == null) name = "world";
-        logger.info("Received request for user: " + name);
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><body><form method='GET'>");
-        out.println("Name: <input type='text' name='name'/><input type='submit' value='OK'/>");
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+
+        out.println("<form method='POST'>");
+        out.println("Enter your name: <input type='text' name='name'/>");
+        out.println("<input type='submit' value='OK'/>");
         out.println("</form>");
-        out.println("<h1>Hello, " + name + "</h1></body></html>");
+    }
+
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        logger.info("User input: {}", name);
+
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        out.println("<h1>Hello, " + name + "</h1>");
     }
 }
