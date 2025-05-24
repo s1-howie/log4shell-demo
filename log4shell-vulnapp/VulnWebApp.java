@@ -1,30 +1,24 @@
+import javax.servlet.*;
 import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.*;
+import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@WebServlet(name = "VulnWebApp", urlPatterns = {"/"})
 public class VulnWebApp extends HttpServlet {
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    private static final Logger logger = LogManager.getLogger(VulnWebApp.class);
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><head><title>Log4Shell PoC</title></head><body>");
-        out.println("<h2>Enter your name:</h2>");
-        out.println("<form method='POST'>");
-        out.println("<input type='text' name='name' />");
-        out.println("<input type='submit' value='Submit' />");
-        out.println("</form>");
-        out.println("</body></html>");
+        response.getWriter().println("<form method='POST'>" +
+                                     "Name: <input type='text' name='name' />" +
+                                     "<input type='submit' value='OK' />" +
+                                     "</form>");
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name");
-        org.apache.logging.log4j.LogManager.getLogger(VulnWebApp.class).error("User input: " + name);
+        logger.info("Received name: " + name);
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><head><title>Thanks</title></head><body>");
-        out.println("<h2>Thanks, " + name + "!</h2>");
-        out.println("</body></html>");
+        response.getWriter().println("<h1>Hello, " + name + "!</h1>");
     }
 }
