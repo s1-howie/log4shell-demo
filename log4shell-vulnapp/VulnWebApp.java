@@ -53,13 +53,13 @@ public class VulnWebApp {
                 }
             } else if (firstLine.startsWith("POST")) {
                 String name = "";
-                for (String linePart : body.split("\\n")) {
-                    if (linePart.startsWith("name=")) {
-                        name = linePart.substring(5); // No decoding
+                for (String param : body.split("&")) {
+                    String[] kv = param.split("=");
+                    if (kv.length == 2 && kv[0].equals("name")) {
+                        name = URLDecoder.decode(kv[1], "UTF-8");
                         break;
                     }
                 }
-
 
                 out.write("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
                 out.write("Hello, " + name + "!\nYour submission was received.");
