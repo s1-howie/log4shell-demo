@@ -22,5 +22,9 @@ RUN jar -cvf ROOT.war WEB-INF
 
 FROM jetty:9.4-jdk8
 
+# Add Log4j to Jetty's lib/ext so it's on the runtime classpath
+COPY --from=build /build/log4j-core-2.14.1.jar /opt/jetty/lib/ext/
+COPY --from=build /build/log4j-api-2.14.1.jar /opt/jetty/lib/ext/
+
 # Deploy WAR into Jetty
 COPY --from=build /build/ROOT.war /var/lib/jetty/webapps/ROOT.war
