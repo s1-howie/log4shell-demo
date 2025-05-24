@@ -56,7 +56,7 @@ public class VulnWebApp {
                 for (String param : body.split("&")) {
                     String[] kv = param.split("=");
                     if (kv.length == 2 && kv[0].equals("name")) {
-                        name = URLDecoder.decode(kv[1], StandardCharsets.UTF_8);
+                        name = URLDecoder.decode(kv[1], "UTF-8");
                         break;
                     }
                 }
