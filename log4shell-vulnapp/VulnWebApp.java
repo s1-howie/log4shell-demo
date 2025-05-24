@@ -1,29 +1,22 @@
-import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.annotation.WebServlet;
+import java.io.*;
 
+@WebServlet("/")
 public class VulnWebApp extends HttpServlet {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        out.println("<html><body>");
-        out.println("<h1>Welcome to VulnWebApp</h1>");
         out.println("<form method='POST'>");
-        out.println("Enter your name: <input type='text' name='name'><br>");
+        out.println("Name: <input type='text' name='name'><br>");
         out.println("<input type='submit' value='OK'>");
         out.println("</form>");
-        out.println("</body></html>");
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = request.getParameter("name");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        String name = request.getParameter("name");
-
-        out.println("<html><body>");
-        out.println("<h1>Hello, " + name + "!</h1>");
-        out.println("</body></html>");
+        out.println("Hello, " + name);
     }
 }
