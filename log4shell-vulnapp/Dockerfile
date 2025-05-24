@@ -5,23 +5,22 @@ WORKDIR /build
 # Download dependencies
 ADD https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar .
 ADD https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar .
+ADD https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar .
 
 # Copy source
 COPY VulnWebApp.java .
+COPY web.xml ./WEB-INF/
 
 # Compile
 RUN mkdir -p WEB-INF/classes && \
-    javac -cp log4j-core-2.14.1.jar:log4j-api-2.14.1.jar VulnWebApp.java -d WEB-INF/classes
+    javac -cp "log4j-core-2.14.1.jar:log4j-api-2.14.1.jar:javax.servlet-api-3.1.0.jar" VulnWebApp.java -d WEB-INF/classes
 
-# Add web.xml
-COPY web.xml WEB-INF/
-
-# Create WAR
+# Package WAR
 RUN jar -cvf ROOT.war WEB-INF
 
 # ---
 
 FROM jetty:9.4-jdk8
 
-# Copy WAR to Jetty deployment directory
+# Deploy WAR into Jetty
 COPY --from=build /build/ROOT.war /var/lib/jetty/webapps/ROOT.war
