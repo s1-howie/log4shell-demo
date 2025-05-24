@@ -1,24 +1,25 @@
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.IOException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.*;
+import org.apache.logging.log4j.*;
 
 public class VulnWebApp extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(VulnWebApp.class);
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         response.setContentType("text/html");
-        response.getWriter().println("<form method='POST'>" +
-                                     "Name: <input type='text' name='name' />" +
-                                     "<input type='submit' value='OK' />" +
-                                     "</form>");
-    }
+        PrintWriter out = response.getWriter();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        logger.info("Received name: " + name);
-        response.setContentType("text/html");
-        response.getWriter().println("<h1>Hello, " + name + "!</h1>");
+        String user = request.getParameter("user");
+        if (user != null) {
+            logger.info("User input: " + user);
+            out.println("<h1>Hello, " + user + "!</h1>");
+        } else {
+            out.println("<form method='GET'>"
+                      + "Name: <input type='text' name='user' />"
+                      + "<input type='submit' value='OK' />"
+                      + "</form>");
+        }
     }
 }
