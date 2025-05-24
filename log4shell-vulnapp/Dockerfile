@@ -1,7 +1,6 @@
+FROM eclipse-temurin:17-jdk-jammy as builder
 
-FROM eclipse-temurin:17-jdk-jammy AS builder
 WORKDIR /app
-
 COPY VulnWebApp.java .
 COPY log4j-api-2.14.1.jar .
 COPY log4j-core-2.14.1.jar .
